@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithRedirect,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { ref, set, get, child } from "firebase/database";
 import { User } from "../types";
 
 interface AuthContextType {
@@ -39,13 +39,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       try {
         if (user) {
-          const userDocRef = doc(db, "users", user.uid);
-          const userDoc = await getDoc(userDocRef);
-          
-          if (userDoc.exists()) {
-            setUserProfile(userDoc.data() as User);
+          const userRef = ref(db, `users/${user.uid}`);
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            setUserProfile(snapshot.val() as User);
           } else {
-            // Create initial user profile
             const initialProfile: User = {
               id: user.uid,
               email: user.email || "",
@@ -60,24 +59,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               },
             };
 
-            await setDoc(userDocRef, initialProfile);
+            await set(userRef, initialProfile);
             setUserProfile(initialProfile);
           }
         } else {
           setUserProfile(null);
         }
-        
-        setCurrentUser(user);
       } catch (error) {
-        console.error("Auth state change error:", error);
-        setUserProfile(null);
-        setCurrentUser(null);
+        console.error("Error fetching user profile:", error);
       } finally {
         setLoading(false);
       }
     });
 
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -114,21 +109,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     try {
-      const userDocRef = doc(db, "users", currentUser.uid);
-      await setDoc(
-        userDocRef,
-        {
-          ...profile,
-          lastUpdated: new Date(),
-        },
-        { merge: true }
-      );
+      await set(ref(db, `users/${currentUser.uid}`), {
+        ...profile,
+        lastUpdated: new Date().toISOString(),
+      });
       setUserProfile(profile);
     } catch (error) {
       console.error("Error updating user profile:", error);
-      // Still update the local state even if Firestore fails
-      setUserProfile(profile);
-      throw new Error("Failed to update user profile in database");
+      throw error;
     }
   };
 

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
   apiKey:
@@ -9,6 +9,9 @@ const firebaseConfig = {
   authDomain:
     process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
     "daily-micro-learning.firebaseapp.com",
+  databaseURL:
+    process.env.REACT_APP_FIREBASE_DATABASE_URL ||
+    "https://daily-micro-learning.firebaseio.com",
   projectId:
     process.env.REACT_APP_FIREBASE_PROJECT_ID || "daily-micro-learning",
   storageBucket:
@@ -25,5 +28,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getDatabase(app);
 export const googleProvider = new GoogleAuthProvider();

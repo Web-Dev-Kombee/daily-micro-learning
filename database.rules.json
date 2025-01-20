@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        ".validate": "newData.hasChildren(['email', 'displayName', 'selectedTopics', 'reminderTime'])"
+      }
+    },
+    "topics": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.admin === true"
+    },
+    "lessons": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.admin === true"
+    }
+  }
+}
