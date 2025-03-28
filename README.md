@@ -1,46 +1,189 @@
-# Getting Started with Create React App
+# AI Knowledge Sprout - Daily Micro Learning App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+AI Knowledge Sprout is a modern web application that delivers daily micro-learning content powered by AI. The app allows users to select topics of interest and receive bite-sized knowledge to build expertise over time.
 
-## Available Scripts
+## 🌟 Features
 
-In the project directory, you can run:
+- **User Authentication**: Secure signup and login with JWT-based authentication
+- **Topic Selection**: Choose from curated topics to focus your learning
+- **AI-Generated Content**: Receive fresh, relevant content tailored to your interests
+- **Progress Tracking**: Monitor your learning journey with visual progress indicators
+- **Daily Learning Streaks**: Build consistency through daily learning sessions
+- **Responsive Design**: Beautiful interface that works on any device
+- **Smooth Animations**: Elegant transitions and micro-interactions
+- **Form Validation**: Robust form validation using Zod and React Hook Form
 
-### `npm start`
+## 🚀 Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Frontend**:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  - React with TypeScript
+  - Tailwind CSS for styling
+  - Shadcn/UI components
+  - React Router for navigation
+  - React Query for data fetching
+  - Zod for form validation
+  - React Hook Form for form management
 
-### `npm test`
+- **Backend**:
+  - Express.js server with TypeScript
+  - MongoDB with Mongoose
+  - JWT for authentication
+  - bcrypt for password hashing
+  - CORS for cross-origin requests
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📦 Project Structure
 
-### `npm run build`
+```
+src/
+├── components/             # Reusable UI components
+│   ├── auth/              # Authentication components
+│   │   ├── LoginForm.tsx        # Login form with validation
+│   │   └── SignupForm.tsx       # Signup form with validation
+│   ├── AnimatedTransition.tsx   # Smooth transitions between states
+│   ├── Header.tsx               # App header component
+│   ├── LearningCard.tsx         # Content display component
+│   ├── ProgressIndicator.tsx    # Visual progress tracking
+│   └── TopicSelector.tsx        # Topic selection interface
+├── contexts/              # React contexts
+│   ├── AuthContext.ts           # Authentication context types
+│   └── AuthProvider.tsx         # Authentication provider component
+├── hooks/                 # React custom hooks
+│   ├── useAuth.ts              # Authentication hook
+│   ├── useLearning.ts          # Learning content management
+│   └── useTopics.ts            # Topic data management
+├── lib/                   # Utility functions and configurations
+│   ├── api.ts                   # API service with auth
+│   └── validations/             # Form validation schemas
+│       └── auth.ts              # Authentication schemas
+├── pages/                 # Application pages
+│   ├── auth/                    # Authentication pages
+│   │   ├── LoginPage.tsx       # Login page
+│   │   └── SignupPage.tsx      # Signup page
+│   ├── Index.tsx                # Landing page
+│   ├── Topic.tsx                # Topic details and learning content
+│   └── NotFound.tsx             # 404 page
+├── types/                 # TypeScript type definitions
+│   └── index.ts                 # Shared types
+├── utils/                 # Utility functions
+│   └── animations.ts            # Animation helpers
+├── App.tsx               # Main app component with routing
+└── index.css             # Global styles
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+server/                   # Backend server
+├── index.ts              # Express server setup
+└── models/               # MongoDB models
+    ├── User.ts           # User model
+    ├── LearningContent.ts # Content model
+    ├── UserProgress.ts    # Progress model
+    └── Topic.ts           # Topic model
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🔐 Authentication Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### User Registration
 
-### `npm run eject`
+- Secure signup with email and password
+- Password requirements:
+  - Minimum 8 characters
+  - At least one uppercase letter
+  - At least one lowercase letter
+  - At least one number
+- Email validation and uniqueness check
+- Automatic login after successful registration
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### User Login
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Secure login with email and password
+- JWT-based authentication
+- Token storage in localStorage
+- Protected route access
+- Automatic redirect for authenticated users
+- Persistent authentication state
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### API Security
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- JWT verification middleware
+- Protected API endpoints
+- CORS configuration
+- Password hashing with bcrypt
+- Secure token generation and validation
+- Type-safe authentication context
 
-## Learn More
+## 🚦 Getting Started
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Prerequisites
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Node.js (v14 or higher)
+- MongoDB database
+- npm or pnpm
+
+### Environment Variables
+
+Create a `.env` file with:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+VITE_API_URL=http://localhost:3000/api
+JWT_SECRET=your_jwt_secret_key
+VITE_OPENAI_API_KEY=your_openai_api_key
+```
+
+### Installation
+
+1. Clone the repository:
+
+```sh
+git clone <repository-url>
+cd ai-knowledge-sprout
+```
+
+2. Install dependencies:
+
+```sh
+pnpm install
+```
+
+3. Start the development servers:
+
+```sh
+pnpm dev:all
+```
+
+4. Open your browser and navigate to:
+
+```
+http://localhost:8080/
+```
+
+## 📱 Responsive Design
+
+The application is fully responsive and optimized for:
+
+- Mobile devices (320px and up)
+- Tablets (768px and up)
+- Desktops (1024px and up)
+- Large screens (1440px and up)
+
+## 🔮 Future Enhancements
+
+- **OAuth Integration**: Social login options
+- **Email Verification**: Verify user email addresses
+- **Password Reset**: Forgot password functionality
+- **User Profile**: Profile management and preferences
+- **Real AI Integration**: Connect to actual AI APIs
+- **Social Sharing**: Share learning insights
+- **Offline Support**: PWA features
+- **Personalized Learning**: AI-recommended topics
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgements
+
+- Design inspired by Apple's design principles
+- Icons from Lucide React
+- UI components from shadcn/ui
+- Form validation powered by Zod
+- Authentication system using JWT

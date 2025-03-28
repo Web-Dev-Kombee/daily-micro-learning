@@ -1,89 +1,95 @@
-import React from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "./contexts/AuthContext";
-import PrivateRoute from "./components/auth/PrivateRoute";
-import Layout from "./components/layout/Layout";
-import Home from "./pages/Home";
-import Onboarding from "./pages/Onboarding";
-import Lesson from "./pages/Lesson";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import { SignIn } from "./components/auth/SignIn";
-import { SignUp } from "./components/auth/SignUp";
-import { useAuth } from "./contexts/AuthContext";
-import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { LoginPage } from "@/pages/auth/LoginPage";
+import { SignupPage } from "@/pages/auth/SignupPage";
+import Topic from "@/pages/Topic";
+import Index from "@/pages/Index";
+import NotFound from "@/pages/NotFound";
+import { AuthProvider } from "./contexts/AuthProvider";
 
 const queryClient = new QueryClient();
 
-function AuthenticatedRoutes() {
-  const { userProfile, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
+// Protected route wrapper
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
-
-  // Redirect to onboarding if user hasn't selected topics
-  if (!userProfile?.selectedTopics?.length ?? 0) {
-    return <Navigate to="/onboarding" />;
-  }
-
-  return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/lesson/:id" element={<Lesson />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </Layout>
-  );
+  return children;
 }
 
-function App() {
-  return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Router>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route
-                path="/onboarding"
-                element={
-                  <PrivateRoute>
-                    <Onboarding />
-                  </PrivateRoute>
-                }
-              />
-
-              {/* Protected routes */}
-              <Route
-                path="/*"
-                element={
-                  <PrivateRoute>
-                    <AuthenticatedRoutes />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-          </Router>
-        </AuthProvider>
-      </QueryClientProvider>
-    </Provider>
-  );
+// Public route wrapper (redirects to home if already authenticated)
+function PublicRoute({ children }: { children: React.ReactNode }) {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
 }
+
+const AppRoutes = () => (
+  <Routes>
+    {/* Public Routes */}
+    <Route
+      path="/login"
+      element={
+        <PublicRoute>
+          <LoginPage />
+        </PublicRoute>
+      }
+    />
+    <Route
+      path="/signup"
+      element={
+        <PublicRoute>
+          <SignupPage />
+        </PublicRoute>
+      }
+    />
+
+    {/* Protected Routes */}
+    <Route
+      path="/"
+      element={
+        <ProtectedRoute>
+          <Index />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/topic/:id"
+      element={
+        <ProtectedRoute>
+          <Topic />
+        </ProtectedRoute>
+      }
+    />
+
+    {/* 404 Route */}
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+);
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <Router>
+          <AppRoutes />
+        </Router>
+      </TooltipProvider>
+    </AuthProvider>
+  </QueryClientProvider>
+);
 
 export default App;
