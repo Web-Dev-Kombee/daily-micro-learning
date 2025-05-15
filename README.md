@@ -13,6 +13,20 @@ AI Knowledge Sprout is a modern web application that delivers daily micro-learni
 - **Smooth Animations**: Elegant transitions and micro-interactions
 - **Form Validation**: Robust form validation using Zod and React Hook Form
 
+## 📸 Screenshots
+
+### Landing Page
+
+![Landing Page](./screenshots/landing-page.png)
+
+### Login Page
+
+![Login Page](./screenshots/login-page.png)
+
+### Dashboard
+
+![Dashboard](./screenshots/dashboard.png)
+
 ## 🚀 Technologies Used
 
 - **Frontend**:
