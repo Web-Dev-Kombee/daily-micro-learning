@@ -1,8 +1,11 @@
-# AI Knowledge Sprout - Daily Micro Learning App
+# 🌱 AI Knowledge Sprout - Daily Micro Learning App
 
-AI Knowledge Sprout is a modern web application that delivers daily micro-learning content powered by AI. The app allows users to select topics of interest and receive bite-sized knowledge to build expertise over time.
+A modern web application that delivers daily micro-learning content powered by AI.  
+Users can select topics of interest and receive bite-sized knowledge to build expertise over time.
 
-## 🌟 Features
+---
+
+## ✨ Features
 
 - **User Authentication**: Secure signup and login with JWT-based authentication
 - **Topic Selection**: Choose from curated topics to focus your learning
@@ -13,21 +16,53 @@ AI Knowledge Sprout is a modern web application that delivers daily micro-learni
 - **Smooth Animations**: Elegant transitions and micro-interactions
 - **Form Validation**: Robust form validation using Zod and React Hook Form
 
-## 📸 Screenshots
+---
 
-### Landing Page
+## 🚀 Getting Started
 
-![Landing Page](./screenshots/landing-page.png)
+### 1. **Prerequisites**
 
-### Login Page
+- Node.js (v14 or higher)
+- MongoDB database
+- npm or pnpm
 
-![Login Page](./screenshots/login-page.png)
+### 2. **Environment Variables**
 
-### Dashboard
+Create a `.env` file with:
 
-![Dashboard](./screenshots/dashboard.png)
+```env
+MONGODB_URI=your_mongodb_connection_string
+VITE_API_URL=http://localhost:3000/api
+JWT_SECRET=your_jwt_secret_key
+VITE_OPENAI_API_KEY=your_openai_api_key
+```
 
-## 🚀 Technologies Used
+### 3. **Installation**
+
+```sh
+git clone https://github.com/Web-Dev-Kombee/daily-micro-learning.git
+cd ai-knowledge-sprout
+```
+
+### 4. **Install Dependencies**
+
+```sh
+pnpm install
+```
+
+### 5. **Start Development Servers**
+
+```sh
+pnpm dev:all
+```
+
+### 6. **View the App**
+
+Open your browser and navigate to `http://localhost:8080/`
+
+---
+
+## 🛠️ Technologies Used
 
 - **Frontend**:
 
@@ -46,7 +81,9 @@ AI Knowledge Sprout is a modern web application that delivers daily micro-learni
   - bcrypt for password hashing
   - CORS for cross-origin requests
 
-## 📦 Project Structure
+---
+
+## 📁 Project Structure
 
 ```
 src/
@@ -93,9 +130,30 @@ server/                   # Backend server
     └── Topic.ts           # Topic model
 ```
 
-## 🔐 Authentication Features
+---
+
+## 🔑 Authentication Features
 
 ### User Registration
+
+```javascript
+// Example registration validation schema
+const registrationSchema = z
+  .object({
+    email: z.string().email("Must be a valid email"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must include at least one uppercase letter")
+      .regex(/[a-z]/, "Password must include at least one lowercase letter")
+      .regex(/[0-9]/, "Password must include at least one number"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
+```
 
 - Secure signup with email and password
 - Password requirements:
@@ -108,6 +166,15 @@ server/                   # Backend server
 
 ### User Login
 
+```javascript
+// Example JWT token generation
+const generateToken = (user) => {
+  return jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+};
+```
+
 - Secure login with email and password
 - JWT-based authentication
 - Token storage in localStorage
@@ -115,60 +182,7 @@ server/                   # Backend server
 - Automatic redirect for authenticated users
 - Persistent authentication state
 
-### API Security
-
-- JWT verification middleware
-- Protected API endpoints
-- CORS configuration
-- Password hashing with bcrypt
-- Secure token generation and validation
-- Type-safe authentication context
-
-## 🚦 Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- MongoDB database
-- npm or pnpm
-
-### Environment Variables
-
-Create a `.env` file with:
-
-```env
-MONGODB_URI=your_mongodb_connection_string
-VITE_API_URL=http://localhost:3000/api
-JWT_SECRET=your_jwt_secret_key
-VITE_OPENAI_API_KEY=your_openai_api_key
-```
-
-### Installation
-
-1. Clone the repository:
-
-```sh
-git clone <repository-url>
-cd ai-knowledge-sprout
-```
-
-2. Install dependencies:
-
-```sh
-pnpm install
-```
-
-3. Start the development servers:
-
-```sh
-pnpm dev:all
-```
-
-4. Open your browser and navigate to:
-
-```
-http://localhost:8080/
-```
+---
 
 ## 📱 Responsive Design
 
@@ -178,6 +192,25 @@ The application is fully responsive and optimized for:
 - Tablets (768px and up)
 - Desktops (1024px and up)
 - Large screens (1440px and up)
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Landing Page & Login Page
+
+<div style="display: flex; gap: 10px;">
+  <img src="./screenshots/landing-page.png" alt="Landing Page" width="400" />
+  <img src="./screenshots/login-page.png" alt="Login Page" width="400" />
+</div>
+
+### 📊 Dashboard
+
+<div style="display: flex; gap: 10px;">
+  <img src="./screenshots/dashboard.png" alt="Dashboard" width="400" />
+</div>
+
+---
 
 ## 🔮 Future Enhancements
 
@@ -190,14 +223,34 @@ The application is fully responsive and optimized for:
 - **Offline Support**: PWA features
 - **Personalized Learning**: AI-recommended topics
 
-## 📄 License
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Feel free to submit issues and enhancement requests!
+
+1. Fork the repository
+2. Create a new branch for your feature/fix
+3. Commit changes and open a Pull Request
+
+---
+
+## 📜 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgements
+---
 
-- Design inspired by Apple's design principles
-- Icons from Lucide React
-- UI components from shadcn/ui
-- Form validation powered by Zod
-- Authentication system using JWT
+## 👨‍💻 Authors
+
+**Kombee Technologies**
+
+- 🌐 [Portfolio](https://github.com/kombee-technologies)
+- 🌍 [Website](https://www.kombee.com/)
+- 💼 [LinkedIn](https://in.linkedin.com/company/kombee-global)
+
+---
+
+<p align="center">
+  Built with ❤️ using React and Express
+</p>
